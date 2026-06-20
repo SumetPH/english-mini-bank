@@ -12,7 +12,14 @@ function formatSentence(item: WordBankItem): string {
   return item.mySentence?.trim() || "-";
 }
 
-export function formatSavedItemMessage(item: WordBankItem, warnings: string[] = []): string {
+export function formatGoogleTranslateUrl(wordOrChunk: string): string {
+  return `https://translate.google.com/?sl=en&tl=th&text=${encodeURIComponent(wordOrChunk)}&op=translate`;
+}
+
+export function formatSavedItemMessage(
+  item: WordBankItem,
+  warnings: string[] = [],
+): string {
   const lines = [
     "Saved ✅",
     "",
@@ -28,7 +35,10 @@ export function formatSavedItemMessage(item: WordBankItem, warnings: string[] = 
   return lines.join("\n");
 }
 
-export function formatItemsList(items: WordBankItem[], emptyMessage: string): string {
+export function formatItemsList(
+  items: WordBankItem[],
+  emptyMessage: string,
+): string {
   if (items.length === 0) {
     return emptyMessage;
   }
@@ -50,8 +60,8 @@ export function formatRandomItem(item: WordBankItem | null): string {
   }
 
   return [
-    "Try this one 🎯",
-    `${item.wordOrChunk} [${formatShortId(item.id)}]`,
+    `Try this one 🎯 [${formatShortId(item.id)}]`,
+    `${item.wordOrChunk}`,
     `Meaning: ${formatMeaning(item)}`,
     `Sentence: ${formatSentence(item)}`,
   ].join("\n");
@@ -65,6 +75,9 @@ export function formatDeleteNotFound(idPrefix: string): string {
   return `I couldn't find an item with id \`${idPrefix}\`.`;
 }
 
-export function formatDeleteAmbiguous(idPrefix: string, matches: string[]): string {
+export function formatDeleteAmbiguous(
+  idPrefix: string,
+  matches: string[],
+): string {
   return `More than one item matches \`${idPrefix}\`: ${matches.join(", ")}`;
 }

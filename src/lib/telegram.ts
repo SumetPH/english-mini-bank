@@ -26,6 +26,11 @@ export interface TelegramUpdate {
 
 interface SendMessageOptions {
   parseMode?: "Markdown";
+  disableLinkPreview?: boolean;
+  linkButton?: {
+    text: string;
+    url: string;
+  };
 }
 
 export async function sendMessage(
@@ -43,6 +48,12 @@ export async function sendMessage(
       chat_id: chatId,
       text,
       parse_mode: options?.parseMode,
+      link_preview_options: options?.disableLinkPreview
+        ? { is_disabled: true }
+        : undefined,
+      reply_markup: options?.linkButton
+        ? { inline_keyboard: [[options.linkButton]] }
+        : undefined,
     }),
   });
 
